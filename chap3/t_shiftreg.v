@@ -1,0 +1,20 @@
+module t_shiftreg ;
+   wire out ;
+   reg 	clk, in, res ;
+
+   initial
+     begin
+	$monitor("%d", out) ;
+	clk <= 0 ;
+	in <= 0 ;
+	res <= 1;
+
+	#360
+	  $finish ;
+     end
+
+   always #10
+     begin
+	clk <= ~clk ;
+     end
+endmodule

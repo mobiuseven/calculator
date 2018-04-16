@@ -1,0 +1,35 @@
+module regfile1(q, d, rsel, wsel, we,  ck, res, r_out0, r_out1, r_out2, r_out3) ;
+   output [15:0] q ;
+   output [15:0] r_out0, r_out1, r_out2, r_out3 ;
+   input [15:0]  d ;
+   input [1:0] 	 rsel, wsel ;
+   input 	 we, ck, res ;
+   reg [15:0] r0, r1, r2, r3 ;
+   
+   always @(posedge ck or negedge res)
+     begin
+	if(!res)
+	  begin
+	     {r0, r1, r2, r3} <= 64'd0 ;
+	  end
+	else if(!we)
+	  begin
+	     case(wsel)
+	       2'd0: r0 <= d ;
+	       2'd1: r1 <= d ;
+	       2'd2: r2 <= d ;
+	       2'd3: r3 <= d ;
+	     endcase
+	  end
+     end // always @ (posedge ck or negedge res)
+   
+   assign q = (rsel == 2'd0) ? r0 :
+	      (rsel == 2'd1) ? r1 :
+	      (rsel == 2'd2) ? r2 :
+	      (rsel == 2'd3) ? r3 : 16'bx ;
+   assign r_out0 <= r0 ;
+   assign r_out1 = r1 ;
+   assign r_out2 = r2 ;
+   assign r_out3 = r3 ;
+   
+endmodule // regfile1
